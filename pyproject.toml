@@ -1,0 +1,14 @@
+[project]
+name = "tcga-lung-multiomics"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "anndata>=0.12.10",
+    "pymaftools",
+    "requests>=2.32.5",
+]
+
+[tool.uv.sources]
+pymaftools = { path = "./pymaftools-dev", editable = true }

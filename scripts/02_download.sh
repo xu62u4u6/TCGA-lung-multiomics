@@ -6,7 +6,7 @@ TOKEN=/home/blue0228/tcga-token.txt
 MANIFEST_DIR=data/manifests
 RAW_DIR=data/raw
 
-for dtype in expression mutation cnv methylation clinical; do
+for dtype in expression mutation cnv cnv_gene methylation clinical; do
     echo "=========================================="
     echo "  Downloading: $dtype"
     echo "=========================================="

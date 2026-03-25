@@ -9,7 +9,7 @@ build/
 
 # Data
 data/
-pymaftools-dev/
+pymaftools/
 
 # Logs
 *.log
@@ -21,3 +21,6 @@ pymaftools-dev/
 # OS
 .DS_Store
 Thumbs.db
+
+
+deprecated/

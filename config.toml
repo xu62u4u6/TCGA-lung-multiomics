@@ -1,9 +1,10 @@
 projects = ["TCGA-LUAD", "TCGA-LUSC"]
 
 [download]
-token     = "/home/data/tools/gdc-user-token.2025-12-10T05_31_54.499Z.txt"
-threads   = 8
-retries   = 5
+gdc_client = "tools/gdc-client"
+token      = "/home/data/tools/gdc-user-token.2025-12-10T05_31_54.499Z.txt"
+threads    = 20
+retries    = 5
 
 [data_types.expression]
 data_type    = "Gene Expression Quantification"

@@ -11,8 +11,13 @@ build/
 data/
 pymaftools/
 
+# Tools (binaries, not tracked)
+tools/gdc-client
+tools/*.zip
+
 # Logs
 *.log
+logs/
 
 # IDE
 .vscode/

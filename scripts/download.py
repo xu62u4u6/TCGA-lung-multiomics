@@ -35,14 +35,24 @@ def load_config() -> dict:
         return tomllib.load(f)
 
 
-def find_gdc_client() -> str:
+def find_gdc_client(cfg: dict) -> str:
+    # 1. config [download].gdc_client
+    configured = cfg.get("download", {}).get("gdc_client")
+    if configured:
+        p = Path(configured)
+        if p.exists():
+            return str(p)
+    # 2. PATH
     found = shutil.which("gdc-client")
     if found:
         return found
-    for candidate in [Path.home() / ".local/bin/gdc-client", Path("/usr/local/bin/gdc-client")]:
+    # 3. common locations
+    for candidate in [Path("tools/gdc-client"), Path.home() / ".local/bin/gdc-client"]:
         if candidate.exists():
             return str(candidate)
-    raise FileNotFoundError("gdc-client not found. Install it or add it to PATH.")
+    raise FileNotFoundError(
+        "gdc-client not found. Download it to tools/gdc-client or set [download].gdc_client in config.toml"
+    )
 
 
 # ── Manifest ─────────────────────────────────────────────────────────────────
@@ -142,9 +152,9 @@ def verify_files(dtype: str, manifest: pd.DataFrame, file_ids: set[str]) -> list
 # ── gdc-client ───────────────────────────────────────────────────────────────
 
 def run_gdc_client(manifest_path: Path, out_dir: Path, token: str | None,
-                   threads: int, retries: int) -> int:
+                   threads: int, retries: int, cfg: dict) -> int:
     cmd = [
-        find_gdc_client(),
+        find_gdc_client(cfg),
         "download",
         "-m", str(manifest_path),
         "-d", str(out_dir),
@@ -154,6 +164,9 @@ def run_gdc_client(manifest_path: Path, out_dir: Path, token: str | None,
     if token and Path(token).exists():
         cmd += ["-t", token]
     return subprocess.run(cmd).returncode
+
+
+
 
 
 # ── Download ─────────────────────────────────────────────────────────────────
@@ -191,7 +204,7 @@ def download_dtype(dtype: str, cfg: dict, log_df: pd.DataFrame) -> pd.DataFrame:
     write_temp_manifest(remaining, tmp_path)
 
     print(f"  Calling gdc-client ({len(remaining)} files, {threads} threads)...")
-    rc = run_gdc_client(tmp_path, out_dir, token, threads, retries)
+    rc = run_gdc_client(tmp_path, out_dir, token, threads, retries, cfg)
     tmp_path.unlink(missing_ok=True)
 
     if rc != 0:

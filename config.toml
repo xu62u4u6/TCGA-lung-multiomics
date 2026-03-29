@@ -1,0 +1,21 @@
+projects = ["TCGA-LUAD", "TCGA-LUSC"]
+
+[data_types.expression]
+data_type    = "Gene Expression Quantification"
+workflow_type = "STAR - Counts"
+
+[data_types.mutation]
+data_type    = "Masked Somatic Mutation"
+workflow_type = "Aliquot Ensemble Somatic Variant Merging and Masking"
+
+[data_types.cnv_seg]
+data_type    = "Allele-specific Copy Number Segment"
+workflow_type = "ASCAT3"
+
+[data_types.cnv_gene]
+data_type    = "Gene Level Copy Number"
+workflow_type = "ASCAT3"
+
+[data_types.methylation]
+data_type    = "Methylation Beta Value"
+workflow_type = "SeSAMe Methylation Beta Estimation"
